@@ -1,0 +1,31 @@
+name: Continuous Telegram Bot Daemon
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: # Allows you to manually trigger it from GitHub
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+
+      - name: Set Up Stable Python Runtime
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install Project Dependencies
+        run: |
+          pip install --upgrade pip
+          pip install langgraph openai python-telegram-bot python-dotenv tavily-python agentspan
+
+      - name: Execute Live Bot Daemon
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+        run: python agent.py
