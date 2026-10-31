@@ -24,3 +24,9 @@ for file in Path('docs').glob('*.md'):
     chunks += [p.strip() for p in file.read_text(encoding='utf-8').split('\n\n') if p.strip()]
 
 chunk_vectors = embed()
+print(f'Indexed {len(chunks)} chunks \n')
+
+def retrieve(question, k=3):
+    q = embed([question])[0]
+    scores = chunk_vectors @ q / (np.linalg.norm(chunk_vectors, axis=1) * np.linalg.norm(q))
+    return [chunks[i] for i in np.argsort(scores)[::-1][:k]]
