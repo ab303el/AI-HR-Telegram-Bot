@@ -54,7 +54,7 @@ if HANDBOOK_PATH.is_file():
 else:
     print(f"WARNING: handbook.md not found (expected at {RAG_DIR / 'handbook.md'})")
 
-MODEL_NAME = os.getenv("LLM_MODEL", "google/gemini-1.5-flash")
+MODEL_NAME = os.getenv("LLM_MODEL", "openrouter/free")
 AGENT_NAME = "telegram-rag-agent"
 TELEGRAM_MAX_CHARS = 4000  # under Telegram's 4096 hard limit
 OTLP_ENDPOINT = os.getenv(
